@@ -1,4 +1,4 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 import threading
 import time
 
@@ -9,7 +9,7 @@ from MainWindow import MainWindow
 
 
 ##
-#“¯ˆêƒXƒŒƒbƒh‚Å‚ÌŽÀs‡˜ƒNƒ‰ƒX
+#åŒä¸€ã‚¹ãƒ¬ãƒƒãƒ‰ã§ã®å®Ÿè¡Œé †åºã‚¯ãƒ©ã‚¹
 ##
 class MPComp:
     def __init__(self):
@@ -19,7 +19,7 @@ class MPComp:
 	self.K = 0
 
 ##
-#’¼—ñƒuƒƒbƒN‚ðŽÀs‚·‚éƒXƒŒƒbƒh‚ÌƒNƒ‰ƒX
+#ç›´åˆ—ãƒ–ãƒ­ãƒƒã‚¯ã‚’å®Ÿè¡Œã™ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã‚¯ãƒ©ã‚¹
 ##
 class MPTask(OpenRTM_aist.Task):
     def __init__(self, c):
@@ -27,7 +27,7 @@ class MPTask(OpenRTM_aist.Task):
         self.m_ec = c
         self.m_comp = []
     ##
-    #ƒRƒ“ƒ|[ƒlƒ“ƒg‚ð’Ç‰Á‚·‚éŠÖ”
+    #ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹é–¢æ•°
     ##
     def addComp(self, c, I, J, K):
         self.mc = MPComp()
@@ -37,7 +37,7 @@ class MPTask(OpenRTM_aist.Task):
         self.mc.K = K
         self.m_comp.append(self.mc)
     ##
-    #ƒXƒŒƒbƒhŽÀsŠÖ”
+    #ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–¢æ•°
     ##
     def svc(self):
         if len(self.m_ec.rs) > self.m_ec.r_num:
@@ -50,7 +50,7 @@ class MPTask(OpenRTM_aist.Task):
 
 
 ##
-#GUI‚ðŽÀs‚·‚éƒXƒŒƒbƒh‚ÌƒNƒ‰ƒX
+#GUIã‚’å®Ÿè¡Œã™ã‚‹ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã‚¯ãƒ©ã‚¹
 ## 
 class GUITask(OpenRTM_aist.Task):
     app_flag = False
@@ -58,7 +58,7 @@ class GUITask(OpenRTM_aist.Task):
         OpenRTM_aist.Task.__init__(self)
         self.m_ec = ec
     ##
-    #ƒXƒŒƒbƒhŽÀsŠÖ”
+    #ã‚¹ãƒ¬ãƒƒãƒ‰å®Ÿè¡Œé–¢æ•°
     ##
     def svc(self):
         if GUITask.app_flag == False:

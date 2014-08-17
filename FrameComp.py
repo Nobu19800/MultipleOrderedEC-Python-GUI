@@ -1,4 +1,4 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 from ExComp import ExComp, CompLayout
 from FEComp import FEComp
@@ -15,7 +15,7 @@ import struct
 
 
 ##
-#���s�����̃u���b�N��\������E�B�W�F�b�g
+#実行順序のブロックを表示するウィジェット
 ##
 class FrameComp(QtGui.QWidget):
     UpdateSizeSignal = QtCore.pyqtSignal()
@@ -26,12 +26,12 @@ class FrameComp(QtGui.QWidget):
         
         self.m_ec = ec
         self.mainLayout = QtGui.QVBoxLayout()
-        self.TB = QtGui.QPushButton(u"�ǉ�")
+        self.TB = QtGui.QPushButton(u"追加")
         
         self.TB.clicked.connect(self.AddCompsT)
         self.mainLayout.addWidget(self.TB)
         
-        self.DB = QtGui.QPushButton(u"�폜")
+        self.DB = QtGui.QPushButton(u"削除")
         
         self.DB.clicked.connect(self.DeleteFrame)
         self.mainLayout.addWidget(self.DB)
@@ -49,7 +49,7 @@ class FrameComp(QtGui.QWidget):
 	self.UB = []
 
     ##
-    #���̃u���b�N���폜����֐�
+    #このブロックを削除する関数
     ##
     def DeleteFrame(self):
 
@@ -57,11 +57,11 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #����u���b�N��ǉ�����X���b�g
+    #直列ブロックを追加するスロット
     ##
     def AddCompSlot3(self, c):
 
-	AB2 = AddButton(u"�ǉ�")
+	AB2 = AddButton(u"追加")
 	self.AB2.append(AB2)
 	
 
@@ -106,7 +106,7 @@ class FrameComp(QtGui.QWidget):
 	VW = QtGui.QWidget()
 	VW.setLayout(Vl)
 
-	mBT = AddButton3(u"�폜")
+	mBT = AddButton3(u"削除")
 	self.mBT.append(mBT)
 	mBT.Vl = VW
 	mBT.c = c
@@ -147,7 +147,7 @@ class FrameComp(QtGui.QWidget):
 	
 
 	
-	c.AB = AddButton2(u"��\n��")
+	c.AB = AddButton2(u"追\n加")
 	c.AB.Cl = c
 
 	
@@ -164,7 +164,7 @@ class FrameComp(QtGui.QWidget):
 	c.subLayout.addStretch()
 	
 	
-	UB = AddButton2(u"�ǉ�")
+	UB = AddButton2(u"追加")
 	self.UB.append(UB)
 	UB.Cl = c
 	
@@ -215,7 +215,7 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #����u���b�N���폜����X���b�g
+    #直列ブロックを削除するスロット
     ##
     def DeleteComp(self, Vl, c):
 
@@ -243,7 +243,7 @@ class FrameComp(QtGui.QWidget):
     
 
     ##
-    #�T�C�Y�ύX�̊֐�
+    #サイズ変更の関数
     ##
     def UpdateSize(self):
 
@@ -279,7 +279,7 @@ class FrameComp(QtGui.QWidget):
 	    self.Comps[i].Lb.setPixmap(QtGui.QPixmap(":/images/arrow.png").scaled(Ws*180,30))
 
     ##
-    #����u���b�N��擪�ɒǉ�����X���b�g
+    #並列ブロックを先頭に追加するスロット
     ##
     def AddCompsT(self):
         self.InsertComps2(2)
@@ -287,7 +287,7 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #����u���b�N�����̃E�B�W�F�b�g�̎��ɒǉ�����X���b�g
+    #並列ブロックをこのウィジェットの次に追加するスロット
     ##
     def AddCompsU(self, c):
         t = self.mainLayout.indexOf(c.mainWidget)
@@ -296,7 +296,7 @@ class FrameComp(QtGui.QWidget):
 
 	
     ##
-    #����u���b�N���w��ʒu�ɒǉ�����X���b�g
+    #直列ブロックを指定位置に追加するスロット
     ##
     def InsertComps2(self, num):
 
@@ -310,7 +310,7 @@ class FrameComp(QtGui.QWidget):
 
 	
     ##
-    #����u���b�N�̏������̊֐�
+    #並列ブロックの初期化の関数
     ##
     def AddComp(self, FC):
 
@@ -332,7 +332,7 @@ class FrameComp(QtGui.QWidget):
 	
 
     ##
-    #����u���b�N�̒ǉ��̊֐�
+    #並列ブロックの追加の関数
     ##
     def InsertComp(self, num, FC):
 
@@ -353,7 +353,7 @@ class FrameComp(QtGui.QWidget):
 	
 
     ##
-    #RTC���ǉ��A�폜���ꂽ�Ƃ��Ƀu���b�N�ɔ��f����֐�
+    #RTCが追加、削除されたときにブロックに反映する関数
     ##
     def UpdateComp2(self, rtclist, rtclist2):
 
@@ -366,14 +366,14 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #����u���b�N�Ƀu���b�N�ǉ�����X���b�g
+    #直列ブロックにブロック追加するスロット
     ##
     def AddCompSlot(self, ec, fc):
         
 	self.InsertComp(fc.CL.indexOf(ec)+1, fc)
 
     ##
-    #����u���b�N��ǉ�����X���b�g
+    #直列ブロックを追加するスロット
     ##
     def AddCompSlot1(self, fc):
 
@@ -381,7 +381,7 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #RTC���ǉ��A�폜���ꂽ�Ƃ��Ɏ��s�����ɔ��f����֐�
+    #RTCが追加、削除されたときに実行条件に反映する関数
     ##
     def SetFrame(self, mR):
 	r = len(mR.ar)
@@ -440,7 +440,7 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #�o�C�i���t�@�C���ۑ��̊֐�
+    #バイナリファイル保存の関数
     ##
     def save(self, ofs2, mR):
 
@@ -575,7 +575,7 @@ class FrameComp(QtGui.QWidget):
 
 
     ##
-    #�u���b�N�̐F��ς���X���b�g
+    #ブロックの色を変えるスロット
     ##
     def UpdateEC(self, rs):
 	for i in range(0, len(rs)):
@@ -610,7 +610,7 @@ class FrameComp(QtGui.QWidget):
 	
 
     ##
-    #�������̊֐�
+    #初期化の関数
     ##
     def newFile(self):
 

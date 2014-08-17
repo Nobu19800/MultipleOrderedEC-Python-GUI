@@ -1,4 +1,4 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 from FrameComp import FrameComp
 import MPComp
@@ -9,7 +9,7 @@ import struct
 
 
 ##
-#�S���s�����̃u���b�N�\���E�B�W�F�b�g
+#全実行順序のブロック表示ウィジェット
 ##
 class SetComp(QtGui.QTabWidget):
     UpdateSizeSignal = QtCore.pyqtSignal("int","int")
@@ -47,7 +47,7 @@ class SetComp(QtGui.QTabWidget):
             self.newFile()
 
     ##
-    #���s�����̍폜�̊֐�
+    #実行順序の削除の関数
     ##
     def DeleteComp(self, fc):
 
@@ -61,7 +61,7 @@ class SetComp(QtGui.QTabWidget):
 	fc.close()
 
     ##
-    #���s�����ǉ��̃X���b�g
+    #実行順序追加のスロット
     ##
     def CreateComp(self):
 
@@ -74,7 +74,7 @@ class SetComp(QtGui.QTabWidget):
 
 	N = "system:" + str(len(self.FCS))
 	self.addTab(FC, N)
-	N = N + u"����"
+	N = N + u"条件"
 	self.addTab(FC.cf, N)
 
 	
@@ -84,7 +84,7 @@ class SetComp(QtGui.QTabWidget):
 	
 
     ##
-    #�t�@�C���ǂݍ��݃X���b�g
+    #ファイル読み込みスロット
     ##
     def save(self, Name):
 
@@ -107,7 +107,7 @@ class SetComp(QtGui.QTabWidget):
 	return True
 
     ##
-    #�t�@�C���ۑ��̃X���b�g
+    #ファイル保存のスロット
     ##
     def UpdateComp2(self):
         
@@ -190,7 +190,7 @@ class SetComp(QtGui.QTabWidget):
 						fd.ECS[k].CB.setCurrentIndex(l)
 
     ##
-    #RTC���ǉ��A�폜���ꂽ�Ƃ��Ƀu���b�N�}�ɔ��f����X���b�g
+    #RTCが追加、削除されたときにブロック図に反映するスロット
     ##
     def UpdateComps(self):
 
@@ -270,7 +270,7 @@ class SetComp(QtGui.QTabWidget):
 	return True
 
     ##
-    #���s���Ă���RTC�̃u���b�N�̐F��ς���X���b�g
+    #実行しているRTCのブロックの色を変えるスロット
     ##
     def UpdateEC(self):
 
@@ -287,7 +287,7 @@ class SetComp(QtGui.QTabWidget):
 	
 
     ##
-    #�T�C�Y�ύX���ɌĂ΂��X���b�g
+    #サイズ変更時に呼ばれるスロット
     ##
     def UpdateSizeSlot(self):
          
@@ -328,14 +328,14 @@ class SetComp(QtGui.QTabWidget):
 	
 
     ##
-    #�{�^���N���b�N���ɌĂяo���X���b�g
+    #ボタンクリック時に呼び出すスロット
     ##
     def UpdateRTC(self, rs):
 
 	self.FCS[0].UpdateRTC(rs)
 
     ##
-    #�������̊֐�
+    #初期化の関数
     ##
     def newFile(self):
 

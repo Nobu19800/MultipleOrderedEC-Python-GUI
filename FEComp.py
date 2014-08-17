@@ -1,9 +1,9 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 from PyQt4 import QtCore, QtGui
 
 
 ##
-#’¼—ñƒuƒƒbƒN‚ÌƒEƒBƒWƒFƒbƒg
+#ç›´åˆ—ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ
 ##
 class FEComp(QtGui.QWidget):
     def __init__(self, parent=None):

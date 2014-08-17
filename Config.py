@@ -1,9 +1,9 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
 
 ##
-#ÀsğŒ‚Ì‰Šú‰»‚ÌŠÖ”
+#å®Ÿè¡Œæ¡ä»¶ã®åˆæœŸåŒ–ã®é–¢æ•°
 ##
 def CrearLayout(lt):
     item = lt.takeAt( 1 )
@@ -12,7 +12,7 @@ def CrearLayout(lt):
 	item = lt.takeAt( 1 )
 
 ##
-#ÀsğŒ‚ÌƒEƒBƒWƒFƒbƒg‚É•\¦‚·‚éRTC‚ÌƒNƒ‰ƒX
+#å®Ÿè¡Œæ¡ä»¶ã®ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆã«è¡¨ç¤ºã™ã‚‹RTCã®ã‚¯ãƒ©ã‚¹
 ##
 class CompList:
     def __init__(self):
@@ -28,15 +28,15 @@ class CompList:
 
 
 ##
-#ÀsğŒ‚ÌƒEƒBƒWƒFƒbƒg
+#å®Ÿè¡Œæ¡ä»¶ã®ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ
 ##
 class Configs(QtGui.QWidget):
     def __init__(self, parent=None):
         super(Configs, self).__init__(parent)
         self.Cl = []
         
-        self.componentName = QtGui.QLabel(u"ƒRƒ“ƒ|[ƒlƒ“ƒg")
-	self.noneName = QtGui.QLabel(u"ğŒ‚È‚µ")
+        self.componentName = QtGui.QLabel(u"ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ")
+	self.noneName = QtGui.QLabel(u"æ¡ä»¶ãªã—")
 	self.createdName = QtGui.QLabel(u"CREATED")
 	self.inactiveName = QtGui.QLabel(u"INACTIVE")
 	self.activeName = QtGui.QLabel(u"ACTIVE")
@@ -81,7 +81,7 @@ class Configs(QtGui.QWidget):
 	self.setLayout(self.mainLayout)
 
     ##
-    #RTC‚ª’Ç‰Á‚³‚ê‚½‚Æ‚«‚É”½‰f‚·‚éŠÖ”
+    #RTCãŒè¿½åŠ ã•ã‚ŒãŸã¨ãã«åæ˜ ã™ã‚‹é–¢æ•°
     ##
     def addComp(self, name):
         self.cl = CompList()
@@ -112,7 +112,7 @@ class Configs(QtGui.QWidget):
 	self.Cl.append(self.cl)
         
     ##
-    #‰Šú‰»‚ÌŠÖ”
+    #åˆæœŸåŒ–ã®é–¢æ•°
     ##
     def resetComp(self):
         self.Cl = []

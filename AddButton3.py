@@ -1,11 +1,11 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
 from ExComp import CompLayout
 
 
 ##
-#����u���b�N�ǉ��{�^�����܂ރE�B�W�F�b�g
+#並列ブロック追加ボタンを含むウィジェット
 ##
 class AddButton3(QtGui.QWidget):
     clicked = QtCore.pyqtSignal("QtGui.QWidget", "CompLayout")
@@ -27,7 +27,7 @@ class AddButton3(QtGui.QWidget):
         self.setLayout(self.mainLayout)
 
     ##
-    #�{�^���N���b�N���ɌĂяo���X���b�g
+    #ボタンクリック時に呼び出すスロット
     ##
     def clickedSlot(self):
         print 1

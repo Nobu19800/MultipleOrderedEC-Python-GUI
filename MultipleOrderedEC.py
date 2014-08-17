@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 
@@ -13,7 +13,7 @@ import MPComp
 
 
 ##
-#���s�����̐ݒ肪�ł�����s�R���e�L�X�g�N���X
+#実行順序の設定ができる実行コンテキストクラス
 ##
 class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
   
@@ -38,7 +38,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         self.nameList = []
         self.comp_t = []
     ##
-    #rtc.conf�̐ݒ���擾����֐�
+    #rtc.confの設定を取得する関数
     ##
     def getProperty(self, prop, key, value):
         
@@ -63,7 +63,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
                 #self.nameList.append(self._comps[i]._sm._obj.get_component_profile().instance_name)
             del guard2
     ##
-    #�R���|�[�l���g�̖��O�擾�̊֐�
+    #コンポーネントの名前取得の関数
     ##
     def getCompName(self, num):
         
@@ -78,13 +78,13 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         return Name
 
     ##
-    #�R���|�[�l���g�̐��擾�̊֐�
+    #コンポーネントの数取得の関数
     ##
     def getCompNum(self):
         return len(self._comps)
 
     ##
-    #�R���|�[�l���g�̃��W�b�N���s�̊֐�
+    #コンポーネントのロジック実行の関数
     ##
     def workerComp(self, c):
         sd = c.r in self._comps
@@ -99,7 +99,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
                     self._comps[i]._sm.worker()
 
     ##
-    #�ݒ肵�����s������RTC���i�[����֐�
+    #設定した実行順序のRTCを格納する関数
     ##
     def LoadRules(self):
         for h in range(0, len(self.rs)):
@@ -122,7 +122,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
 				self.rs[h].rs[i].SR[j][k].r = self._comps[l]
 	
     ##
-    #GUI������s�����̓ǂݍ��݂̊֐�
+    #GUIから実行順序の読み込みの関数
     ##
     def LoadRuleGUI(self, RS_d):
         guard = OpenRTM_aist.ScopedLock(self._mutex_del)
@@ -135,7 +135,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         del guard
   
     ##
-    #�t�@�C��������s�����̓ǂݍ��݂̊֐�
+    #ファイルから実行順序の読み込みの関数
     ##
     def LoadRule(self):
 
@@ -157,7 +157,7 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
 	del guard
 
     ##
-    #�X���b�h���s�֐�
+    #スレッド実行関数
     ##
     def svc(self):
         self._rtcout.RTC_TRACE("svc()")

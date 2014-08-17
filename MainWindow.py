@@ -1,11 +1,11 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
 from SetComp import SetComp
 
 
 ##
-#ƒƒCƒ“ƒEƒBƒ“ƒhƒE‚ÌƒEƒBƒWƒFƒbƒg
+#ãƒ¡ã‚¤ãƒ³ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ
 ##
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, ec):
@@ -19,13 +19,13 @@ class MainWindow(QtGui.QMainWindow):
         self.layout.addWidget(self.SC)
 
         self.layout.addStretch()
-	self.UB = QtGui.QPushButton(u"XV")
+	self.UB = QtGui.QPushButton(u"æ›´æ–°")
 	self.layout.addWidget(self.UB)
 
 	
 	self.UB.clicked.connect(self.UpdateComp)
 
-	self.DB = QtGui.QPushButton(u"’Ç‰Á")
+	self.DB = QtGui.QPushButton(u"è¿½åŠ ")
 	self.layout.addWidget(self.DB)
 
 	self.DB.clicked.connect(self.SC.CreateComp)
@@ -54,14 +54,14 @@ class MainWindow(QtGui.QMainWindow):
         #self.widget.resize(400, 400)
 
     ##
-    #ƒTƒCƒY‚ğ•ÏX‚·‚é‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚éƒXƒƒbƒg
+    #ã‚µã‚¤ã‚ºã‚’å¤‰æ›´ã™ã‚‹ã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def m_resize(self, w, h):
 
 	self.widget.resize(w, h)
 
     ##
-    #RTC‚ª’Ç‰ÁAíœ‚³‚ê‚½‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚éƒXƒƒbƒg
+    #RTCãŒè¿½åŠ ã€å‰Šé™¤ã•ã‚ŒãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def UpdateComp(self):
 
@@ -69,7 +69,7 @@ class MainWindow(QtGui.QMainWindow):
 	SC.UpdateComp2()
 
     ##
-    #ƒAƒNƒVƒ‡ƒ“‚Ìì¬‚ÌŠÖ”
+    #ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ä½œæˆã®é–¢æ•°
     ##
     def createAction(self):
 
@@ -90,7 +90,7 @@ class MainWindow(QtGui.QMainWindow):
         
 
     ##
-    #ƒƒjƒ…[‚Ìì¬‚ÌŠÖ”
+    #ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆã®é–¢æ•°
     ##
     def createMenus(self):
 
@@ -103,11 +103,11 @@ class MainWindow(QtGui.QMainWindow):
 
 
     ##
-    #ƒtƒ@ƒCƒ‹“Ç‚İ‚İƒXƒƒbƒg
+    #ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def open(self):
 
-	fileName = QtGui.QFileDialog.getOpenFileName(self,u"ŠJ‚­","","Config File (*.conf);;Python File (*.py);;All Files (*)")
+	fileName = QtGui.QFileDialog.getOpenFileName(self,u"é–‹ã","","Config File (*.conf);;Python File (*.py);;All Files (*)")
 	
 
 	ba = str(fileName.toLocal8Bit())
@@ -115,11 +115,11 @@ class MainWindow(QtGui.QMainWindow):
 
 
     ##
-    #ƒtƒ@ƒCƒ‹•Û‘¶‚ÌƒXƒƒbƒg
+    #ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜ã®ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def save(self):
 
-	fileName = QtGui.QFileDialog.getSaveFileName(self,u"•Û‘¶", "","Config File (*.conf);;All Files (*)")
+	fileName = QtGui.QFileDialog.getSaveFileName(self,u"ä¿å­˜", "","Config File (*.conf);;All Files (*)")
 	if fileName.isEmpty():
             return False
 
@@ -131,7 +131,7 @@ class MainWindow(QtGui.QMainWindow):
 
 
     ##
-    #‰Šú‰»‚ÌƒXƒƒbƒg
+    #åˆæœŸåŒ–ã®ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def newFile(self):
 
@@ -142,7 +142,7 @@ class MainWindow(QtGui.QMainWindow):
 
 
     ##
-    #Às‡˜‚ğGUI‚É”½‰f‚³‚¹‚éŠÖ”
+    #å®Ÿè¡Œé †åºã‚’GUIã«åæ˜ ã•ã›ã‚‹é–¢æ•°
     ##
     def UpdateRTC(self,rs):
 

@@ -1,4 +1,4 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 
 from PyQt4 import QtCore, QtGui
@@ -6,7 +6,7 @@ from FEComp import FEComp
 
 
 ##
-#RTC‚ÌƒuƒƒbƒN‚ÌƒŒƒCƒAƒEƒg
+#RTCã®ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 ##
 class CompLayout:
     def __init__(self):
@@ -20,7 +20,7 @@ class CompLayout:
 
 
 ##
-#RTC‚ÌƒuƒƒbƒN‚ÌƒEƒBƒWƒFƒbƒg
+#RTCã®ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚¦ã‚£ã‚¸ã‚§ãƒƒãƒˆ
 ##
 class ExComp(QtGui.QWidget):
     AddCompSignal = QtCore.pyqtSignal("ExComp", "FEComp")
@@ -40,10 +40,10 @@ class ExComp(QtGui.QWidget):
 
 	self.subWidget.setAutoFillBackground(True)
 
-        self.BT = QtGui.QPushButton(u"íœ")
+        self.BT = QtGui.QPushButton(u"å‰Šé™¤")
         self.BT.clicked.connect(self.DeleteComp)
 
-        self.DT = QtGui.QPushButton(u"’Ç‰Á")
+        self.DT = QtGui.QPushButton(u"è¿½åŠ ")
         self.DT.clicked.connect(self.AddCompSlot)
 
         self.Lb = QtGui.QLabel()
@@ -63,13 +63,13 @@ class ExComp(QtGui.QWidget):
         self.setLayout(self.mainLayout)
 
     ##
-    #RTC‚ğ’Ç‰Áƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚éƒXƒƒbƒg
+    #RTCã‚’è¿½åŠ ãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def AddCompSlot(self):
 	self.AddCompSignal.emit(self, self.Fc)
 
     ##
-    #RTC‚ª’Ç‰ÁAíœ‚³‚ê‚½‚Æ‚«‚ÉÀsğŒ‚É”½‰f‚·‚éŠÖ”
+    #RTCãŒè¿½åŠ ã€å‰Šé™¤ã•ã‚ŒãŸã¨ãã«å®Ÿè¡Œæ¡ä»¶ã«åæ˜ ã™ã‚‹é–¢æ•°
     ##
     def UpdateComp(self, rtclist, rtclist2):
 	Id = self.CB.currentIndex()
@@ -85,7 +85,7 @@ class ExComp(QtGui.QWidget):
 
 	
     ##
-    #ƒuƒƒbƒN‚ğíœ‚µ‚½‚Æ‚«‚ÉŒÄ‚Ño‚³‚ê‚éƒXƒƒbƒg
+    #ãƒ–ãƒ­ãƒƒã‚¯ã‚’å‰Šé™¤ã—ãŸã¨ãã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚¹ãƒ­ãƒƒãƒˆ
     ##
     def DeleteComp(self):
         self.Fc.ECS.remove(self)
