@@ -4,8 +4,16 @@ import time
 
 import OpenRTM_aist
 
-from PyQt4 import QtCore, QtGui
-from MainWindow import MainWindow
+
+pyqtExist = True
+try:
+    from PyQt4 import QtCore, QtGui
+except:
+    pyqtExist = False
+
+
+if pyqtExist:
+    from MainWindow import MainWindow
 
 
 ##
@@ -63,7 +71,7 @@ class GUITask(OpenRTM_aist.Task):
     def svc(self):
         if GUITask.app_flag == False:
             GUITask.app_flag = True
-            guard = OpenRTM_aist.ScopedLock(self.m_ec._mutex_del)
+            guard = OpenRTM_aist.ScopedLock(self.m_ec._workerthread._mutex)
 
             app = QtGui.QApplication([""])
             mainWin = MainWindow(self.m_ec)

@@ -194,6 +194,11 @@ def LoadSubRule(cs, nm, sr):
 ##
 def LoadMainRule(rs, fName):
 
+    if LoadMainRule == "":
+        R = main_Rule()
+        rs.append(R)
+        return True
+
     root, ext = os.path.splitext(fName)
     
 
@@ -227,7 +232,9 @@ def LoadMainRule(rs, fName):
                         r.SR.append(SRs)
                     R.rs.append(r)
                 rs.append(R)
-        except ImportError:
+        except:
+            R = main_Rule()
+            rs.append(R)
             return False
 
 
@@ -235,11 +242,15 @@ def LoadMainRule(rs, fName):
         try:
             infile = open(fName, 'rb')
         except:
+            R = main_Rule()
+            rs.append(R)
             return False
         
+        count = 0
 
         Type = 0
         while True:
+            count += 1
             c = infile.read(1)
             if c =="":
                 break
@@ -249,15 +260,23 @@ def LoadMainRule(rs, fName):
                 
         infile.seek(0)
 
+        if count < 2:
+            R = main_Rule()
+            rs.append(R)
+            infile.close()
+            return False
+
 
 
 
 
         if Type == 0:
-            infile.close
+            
             try:
                 infile = open(fName)
             except:
+                R = main_Rule()
+                rs.append(R)
                 return False
             line = infile.readline()
 

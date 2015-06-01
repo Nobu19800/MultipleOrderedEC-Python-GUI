@@ -23,7 +23,7 @@ class CompLayout:
 #RTCのブロックのウィジェット
 ##
 class ExComp(QtGui.QWidget):
-    AddCompSignal = QtCore.pyqtSignal("ExComp", "FEComp")
+    AddCompSignal = QtCore.pyqtSignal(QtGui.QWidget, QtGui.QWidget)
     def __init__(self, parent=None):
         super(ExComp, self).__init__(parent)
         self.Fc = None

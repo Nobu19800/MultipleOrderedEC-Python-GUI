@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from PyQt4 import QtCore, QtGui
 from SetComp import SetComp
 
@@ -87,6 +88,10 @@ class MainWindow(QtGui.QMainWindow):
         self.saveAct = QtGui.QAction("&Save",self)
         self.saveAct.setShortcuts(QtGui.QKeySequence.Save)
         self.saveAct.triggered.connect(self.save)
+
+        self.saveAsAct = QtGui.QAction("&Save &As",self)
+        self.saveAsAct.setShortcuts(QtGui.QKeySequence.SaveAs)
+        self.saveAsAct.triggered.connect(self.saveAs)
         
 
     ##
@@ -98,6 +103,7 @@ class MainWindow(QtGui.QMainWindow):
 	self.fileMenu.addAction(self.newAct)
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addAction(self.saveAct)
+        self.fileMenu.addAction(self.saveAsAct)
 	
 
 
@@ -107,24 +113,33 @@ class MainWindow(QtGui.QMainWindow):
     ##
     def open(self):
 
-	fileName = QtGui.QFileDialog.getOpenFileName(self,u"開く","","Config File (*.conf);;Python File (*.py);;All Files (*)")
-	
+        fileName = QtGui.QFileDialog.getOpenFileName(self,u"開く","","Config File (*.conf);;Python File (*.py);;All Files (*)")
+        
 
-	ba = str(fileName.toLocal8Bit())
-	self.SC.open(ba)
+        ba = str(fileName.toLocal8Bit())
+        self.SC.open(ba)
+        self.m_ec.FileName = ba
 
+    def save(self):
+        root, ext = os.path.splitext(self.m_ec.FileName)
+        if self.m_ec.FileName == "" or ext == ".py":
+            return self.saveAs()
+        else:
+            return self.SC.save(self.m_ec.FileName)
+            
+            
 
     ##
     #ファイル保存のスロット
     ##
-    def save(self):
+    def saveAs(self):
 
 	fileName = QtGui.QFileDialog.getSaveFileName(self,u"保存", "","Config File (*.conf);;All Files (*)")
 	if fileName.isEmpty():
             return False
 
 	ba = str(fileName.toLocal8Bit())
-	
+	self.m_ec.FileName = ba
 
 
         return self.SC.save(ba)
@@ -135,8 +150,8 @@ class MainWindow(QtGui.QMainWindow):
     ##
     def newFile(self):
 
-	self.SC.newFile()
-
+        self.SC.newFile()
+        self.m_ec.FileName = ""
 
     
 

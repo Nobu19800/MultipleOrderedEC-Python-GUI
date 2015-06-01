@@ -1,23 +1,24 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtCore, QtGui
-from FEComp import FEComp
+from ExComp import CompLayout
+
 
 ##
-#ブロック追加ボタンを含むウィジェット
+#並列ブロック追加ボタンを含むウィジェット
 ##
-class AddButton(QtGui.QWidget):
-    clicked = QtCore.pyqtSignal("FEComp")
+class AddButton3(QtGui.QWidget):
+    clicked = QtCore.pyqtSignal(object, object)
     def __init__(self, text, parent=None):
-        super(AddButton, self).__init__(parent)
+        super(AddButton3, self).__init__(parent)
         
-        self.Fc = None
+        self.Vl = None
+        self.c = None
         self.PB = QtGui.QPushButton(text)
         self.mainLayout = QtGui.QVBoxLayout()
         
         #connect(PB, SIGNAL(clicked()),
         #    this, SLOT(clickedSlot()))
-        #QtCore.QObject.connect(self.PB, QtCore.SIGNAL("clicked()"), self, QtCore.SLOT("clickedSlot()"))
 
         self.PB.clicked.connect(self.clickedSlot)
 
@@ -25,11 +26,9 @@ class AddButton(QtGui.QWidget):
 
         self.setLayout(self.mainLayout)
 
-        
-        
     ##
     #ボタンクリック時に呼び出すスロット
     ##
     def clickedSlot(self):
-        print self.Fc
-        self.clicked.emit(self.Fc)
+        
+        self.clicked.emit(self.Vl, self.c)

@@ -5,15 +5,14 @@ from ExComp import CompLayout
 
 
 ##
-#並列ブロック追加ボタンを含むウィジェット
+#直列ブロック追加ボタンを含むウィジェット
 ##
-class AddButton3(QtGui.QWidget):
-    clicked = QtCore.pyqtSignal("QtGui.QWidget", "CompLayout")
+class AddButton2(QtGui.QWidget):
+    clicked = QtCore.pyqtSignal(object)
     def __init__(self, text, parent=None):
-        super(AddButton3, self).__init__(parent)
+        super(AddButton2, self).__init__(parent)
         
-        self.Vl = None
-        self.c = None
+        self.Cl = None
         self.PB = QtGui.QPushButton(text)
         self.mainLayout = QtGui.QVBoxLayout()
         
@@ -30,5 +29,5 @@ class AddButton3(QtGui.QWidget):
     #ボタンクリック時に呼び出すスロット
     ##
     def clickedSlot(self):
-        print 1
-        self.clicked.emit(self.Vl, self.c)
+        
+        self.clicked.emit(self.Cl)

@@ -12,7 +12,7 @@ import struct
 #全実行順序のブロック表示ウィジェット
 ##
 class SetComp(QtGui.QTabWidget):
-    UpdateSizeSignal = QtCore.pyqtSignal("int","int")
+    UpdateSizeSignal = QtCore.pyqtSignal(int,int)
     def __init__(self, ec, parent=None):
         super(SetComp, self).__init__(parent)
 
@@ -90,7 +90,8 @@ class SetComp(QtGui.QTabWidget):
 
 	mR = []
 
-	ofs2 = open("MP.conf", 'wb')
+    
+	ofs2 = open(Name, 'wb')
 
 
 	c = len(self.FCS)
