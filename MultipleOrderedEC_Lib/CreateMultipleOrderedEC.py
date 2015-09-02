@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+##
+#   @file CreateMultipleOrderedEC.py
+#   @brief 実行順序の設定ができる実行コンテキスト
 
 
 import threading
@@ -18,11 +20,15 @@ except:
     pyqtExist = False
 
 
+
 ##
-#実行順序の設定ができる実行コンテキストクラス
-##
+# @class MultipleOrderedEC
+# @brief 実行順序の設定ができる実行コンテキスト
+#
 class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
-    
+    ##
+    # @brief コンストラクタ
+    # @param self 
     def __init__(self):
         
         OpenRTM_aist.PeriodicExecutionContext.__init__(self)
@@ -34,10 +40,13 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         #print OpenRTM_aist.Manager.instance().getConfig()
         self.SetGui = "YES"
         self.FileName = ""
+        #self.DebugFlag = ""
         self.SetGui = self.getProperty(self.prop, "exec_cxt.periodic.gui", self.SetGui)
         #print self.SetGui
         self.FileName = self.getProperty(self.prop, "exec_cxt.periodic.filename", self.FileName)
         #print self.FileName
+        #self.DebugFlag = self.getProperty(self.prop, "exec_cxt.periodic.debug", self.DebugFlag)
+        
         self.rs = []
         self.r_num = 0
 
@@ -52,6 +61,10 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         self.FileName = self.FileName[0]
 
         
+        #self.DebugFlag = [self.DebugFlag]
+        #OpenRTM_aist.eraseBlank(self.DebugFlag)
+        #self.DebugFlag = self.DebugFlag[0]
+
 
         self._mutex_del2 = threading.RLock()
         if self.SetGui == "YES":
@@ -61,9 +74,14 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
 
         self.nameList = []
         self.comp_t = []
+    
     ##
-    #rtc.confの設定を取得する関数
-    ##
+    # @brief rtc.confの設定を取得する関数
+    # @param self 
+    # @param prop プロパティ
+    # @param key キー
+    # @param value 値
+    # @return 値
     def getProperty(self, prop, key, value):
         
         if  prop.findNode(key) != None:
@@ -72,9 +90,11 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         return value
           
     ##
-    #
-    ##
+    # @brief RTCのリスト更新
+    # @param self 
     def Update_Name(self):
+        self._worker.updateComponentList()
+        
         if self.comp_t == self._worker._comps:
             pass
         else:
@@ -86,9 +106,12 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
                 self._worker._comps[i].i_name = self._worker._comps[i]._rtobj.get_component_profile().instance_name
                 #self.nameList.append(self._worker._comps[i]._sm._obj.get_component_profile().instance_name)
             del guard2
+    
     ##
-    #コンポーネントの名前取得の関数
-    ##
+    # @brief 番号からコンポーネントの名前取得の関数
+    # @param self
+    # @param num 番号
+    # @return RTC名
     def getCompName(self, num):
         
         self.Update_Name()
@@ -101,17 +124,26 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         Name = self._worker._comps[num].i_name
         return Name
 
+    
     ##
-    #コンポーネントの数取得の関数
-    ##
+    # @brief コンポーネントの数取得の関数
+    # @param self
+    # @return RTC数
     def getCompNum(self):
         return len(self._worker._comps)
 
+    
     ##
-    #コンポーネントのロジック実行の関数
-    ##
+    # @brief コンポーネントのロジック実行の関数
+    # @param self
+    # @param c ブロック
     def workerComp(self, c):
         sd = c.r in self._worker._comps
+        
+        #if self.DebugFlag == "YES":
+        #    print c.v
+
+
         if sd == True:
             
             c.r._sm.worker()
@@ -122,9 +154,10 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
                     c.r = self._worker._comps[i]
                     self._worker._comps[i]._sm.worker()
 
+    
     ##
-    #設定した実行順序のRTCを格納する関数
-    ##
+    # @brief 設定した実行順序のRTCを格納する関数
+    # @param self
     def LoadRules(self):
         for h in range(0, len(self.rs)):
             for i in range(0, len(self.rs[h].ar)):
@@ -139,50 +172,58 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
             for i in range(0, len(self.rs[h].rs)):
                 for j in range(0, len(self.rs[h].rs[i].SR)):
                     for k in range(0, len(self.rs[h].rs[i].SR[j])):
+                        
                         for l in range(0, len(self._worker._comps)):
                             #Name = self._worker._comps[l]._sm._obj.get_component_profile().instance_name
                             Name = self.getCompName(l)
                             if Name == self.rs[h].rs[i].SR[j][k].v:
+                                
                                 self.rs[h].rs[i].SR[j][k].r = self._worker._comps[l]
         
+    
     ##
-    #GUIから実行順序の読み込みの関数
-    ##
+    # @brief GUIから実行順序の読み込みの関数
+    # @param self
+    # @param RS_d 実行順序のリスト
     def LoadRuleGUI(self, RS_d):
         guard = OpenRTM_aist.ScopedLock(self._workerthread._mutex)
 
         self.rs = []
         self.rs = RS_d
-
+        
+        
         self.LoadRules()
 
         del guard
   
+    
     ##
-    #ファイルから実行順序の読み込みの関数
-    ##
+    # @brief ファイルから実行順序の読み込みの関数
+    # @param self
     def LoadRule(self):
-
-	  
+        
+        
         guard = OpenRTM_aist.ScopedLock(self._workerthread._mutex)
-	
-	
-	
-	
-	for h in range(0, len(self.rs)):
-	    self.rs[h].rs = []
-	self.rs = []
+        
+        
+        
+        
+        for h in range(0, len(self.rs)):
+                self.rs[h].rs = []
+        self.rs = []
 
-	MPComp.LoadMainRule(self.rs, self.FileName)
+        MPComp.LoadMainRule(self.rs, self.FileName)
 
-	self.LoadRules()
-	
+        self.LoadRules()
+        
 
-	del guard
+        del guard
 
+    
     ##
-    #スレッド実行関数
-    ##
+    # @brief スレッド実行関数
+    # @param self
+    # @return 0
     def svc(self):
         self._rtcout.RTC_TRACE("svc()")
         #flag = True
@@ -194,30 +235,36 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
         
         #while flag:
         while self.threadRunning():
+            
             guard = OpenRTM_aist.ScopedLock(self._workerthread._mutex)
             #self.LoadRules()
             #self._worker._cond.acquire()
             #while not self._worker._running:
             #    self._worker._cond.wait()
+            
             while not self._workerthread._running:
                 self._workerthread._cond.wait()
 
+            self._worker.updateComponentList()
 
             t0_ = OpenRTM_aist.Time()
 
             if self._worker._running:
                 
                 for i in range(0, len(self.rs)):
-		    S = True
-		    for j in range(0, len(self.rs[i].ar)):
+                    S = True
+                    for j in range(0, len(self.rs[i].ar)):
+                        
                         Flag = False
-			for k in range(0, len(self._worker._comps)):
-			    if self.rs[i].ar[j].r == self._worker._comps[k]:	
-				if self.rs[i].ar[j].state == -1:
+                        for k in range(0, len(self._worker._comps)):
+                            if self.rs[i].ar[j].r == self._worker._comps[k]:
+                                
+                                if self.rs[i].ar[j].state == -1:
+                                    
                                     pass
-				else:
+                                else:
                                     if self.rs[i].ar[j].state != self._worker._comps[k]._sm.get_state():
-					S = False
+                                        S = False
                         if Flag == False:
                             for k in range(0, len(self._worker._comps)):
                                 if self.getCompName(k) == self.rs[i].ar[j].name:
@@ -228,39 +275,39 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
                                         if self.rs[i].ar[j].state != self._worker._comps[k]._sm.get_state():
                                             S = False
 
-		    if S == True:
+                    if S == True:
                         self.r_num = i
-			break
-		
+                        break
+                        
                 if self.r_num < len(self.rs):
                     
-		    for i in range(0, len(self.rs[self.r_num].rs)):
-						
-			if len(self.rs[self.r_num].rs[i].SR) == 0:
+                    for i in range(0, len(self.rs[self.r_num].rs)):
+                        
+                        if len(self.rs[self.r_num].rs[i].SR) == 0:
                             pass
-			elif len(self.rs[self.r_num].rs[i].SR) == 1:
+                        elif len(self.rs[self.r_num].rs[i].SR) == 1:
                             
-			    for j in range(0, len(self.rs[self.r_num].rs[i].SR[0])):
-				self.rs[self.r_num].rs[i].SR[0][j].s = 1
-				sd = self.rs[self.r_num].rs[i].SR[0][j].r in self._worker._comps
+                            for j in range(0, len(self.rs[self.r_num].rs[i].SR[0])):
+                                self.rs[self.r_num].rs[i].SR[0][j].s = 1
+                                sd = self.rs[self.r_num].rs[i].SR[0][j].r in self._worker._comps
                                 if sd == True:
                                     self.rs[self.r_num].rs[i].SR[0][j].r._sm.worker()
-				self.rs[self.r_num].rs[i].SR[0][j].s = 0
+                                self.rs[self.r_num].rs[i].SR[0][j].s = 0
 
-			else:
-                            
-			    p_num = len(self.rs[self.r_num].rs[i].SR)
-			    m_task = []
-			    for j in range(0, p_num):
-				m_task_s = MPTask(self)
-				m_task.append(m_task_s)
-				for k in range(0, len(self.rs[self.r_num].rs[i].SR[j])):
-				    m_task_s.addComp(self.rs[self.r_num].rs[i].SR[j][k],i,j,k)
-				m_task_s.activate()
-			    for j in range(0, p_num):
-				m_task[j].wait()
-				m_task[j].close()
-				
+                        else:
+                                
+                               p_num = len(self.rs[self.r_num].rs[i].SR)
+                               m_task = []
+                               for j in range(0, p_num):
+                                   m_task_s = MPTask(self)
+                                   m_task.append(m_task_s)
+                                   for k in range(0, len(self.rs[self.r_num].rs[i].SR[j])):
+                                       m_task_s.addComp(self.rs[self.r_num].rs[i].SR[j][k],i,j,k)
+                                   m_task_s.activate()
+                               for j in range(0, p_num):
+                                   m_task[j].wait()
+                                   m_task[j].close()
+            
                 
             
 
@@ -300,7 +347,9 @@ class MultipleOrderedEC(OpenRTM_aist.PeriodicExecutionContext):
 
   
 
-
+##
+# @brief 実行コンテキスト初期化関数
+# @param manager マネージャオブジェクト
 def MultipleOrderedECInit(manager):
   
   OpenRTM_aist.ExecutionContextFactory.instance().addFactory("MultipleOrderedEC",

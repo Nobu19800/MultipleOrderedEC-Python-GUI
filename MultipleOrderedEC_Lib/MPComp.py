@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+
+##
+#   @file MPComp.py
+#   @brief 実行順序設定関連のクラス、関数
+
 import struct
 import OpenRTM_aist
 import os.path
@@ -7,46 +12,70 @@ import imp
 
 
 
+
 ##
-#実行条件のクラス
-##
+# @class add_Rule
+# @brief 実行条件のクラス
+#
 class add_Rule:
+    ##
+    # @brief コンストラクタ
+    # @param self 
     def __init__(self):
         self.state = -1
         self.name = ""
         self.r = None
+
 ##
-#直列ブロックのクラス
-##
+# @class sub_Rule
+# @brief ブロックのクラス
+#
 class sub_Rule:
+    ##
+    # @brief コンストラクタ
+    # @param self 
     def __init__(self):
         self.v = ""
         self.r = None
         self.s = 0
+
 ##
-#並列ブロックのクラス
-##
+# @class Rule
+# @brief 並列ブロックのクラス
+#
 class Rule:
+    ##
+    # @brief コンストラクタ
+    # @param self 
     def __init__(self):
         self.SR = []
+
 ##
-#実行順序のクラス
-##
+# @class main_Rule
+# @brief 実行順序のクラス
+#
 class main_Rule:
+    ##
+    # @brief コンストラクタ
+    # @param self 
     def __init__(self):
         self.rs = []
         self.ar = []
+
 ##
-#バイナリファイルより文字読み込みする関数
-##
+# @brief バイナリファイルより文字読み込みする関数
+# @param ifs ファイルストリーム
+# @return 読み込んだ文字列
 def ReadString(ifs):
     s = struct.unpack("i",ifs.read(4))[0]
     a = ifs.read(s)
 
     return a
+
 ##
-#バイナリファイルに文字保存する関数
-##
+# @brief バイナリファイルに文字保存する関数
+# @param a 書き込む文字列
+# @param ofs ファイルストリーム
 def WriteString(a, ofs):
     
     a2 = a + "\0"
@@ -56,142 +85,158 @@ def WriteString(a, ofs):
     ofs.write(d)
     
     ofs.write(a2)
+
 ##
-#テキストファイルからの実行順序読み込む関数
-##
+# @brief テキストファイルからの実行順序(直列ブロックのリスト)読み込む関数
+# @param cs ファイルから読み込んだ単語のリスト
+# @param nm 現在の位置
+# @param r 並列ブロック
 def LoadSRule(cs, nm, r):
     
     flag = True
     while(flag):
-		
+
         SR = []
 
-        
-		
-	nm = LoadSubRule(cs, nm, SR)
+    
+        nm = LoadSubRule(cs, nm, SR)
 
 	
 
 	
 
-	r.SR.append(SR)
+        r.SR.append(SR)
 
-		
-	nm = nm + 1
 
-	
+        nm = nm + 1
 
-	
-	    
-	if cs[nm] == "}":
+
+
+    
+        if cs[nm] == "}":
             flag = False
-	    return nm
-		
+            return nm
 
 
+##
+# @brief テキストファイルからの実行順序(並列ブロック)読み込む関数
+# @param cs ファイルから読み込んだ単語のリスト
+# @param nm 現在の位置
+# @param rs 実行順序
 def LoadHRule(cs, nm, rs):
     flag = True;
     while(flag):
-	r = Rule()
-	
-	while(True):
-			
-	    if cs[nm] == "{":
-		break
-	    elif(cs[nm] == "}"):
-		return nm
-	    else:
+        r = Rule()
+
+        while(True):
+
+            if cs[nm] == "{":
+                break
+            elif(cs[nm] == "}"):
+                return nm
+            else:
                 nm = nm + 1
-        
+
 	    
 
 
-	nm = nm + 1
-		
-        
-	nm = LoadSRule(cs,nm,r)
-	rs.append(r)
+        nm = nm + 1
 
-	nm = nm + 1
+
+        nm = LoadSRule(cs,nm,r)
+        rs.append(r)
+
+        nm = nm + 1
 
 	
-	    
-	if cs[nm] == "}":
+
+        if cs[nm] == "}":
             flag = False;
-	    return nm
+            return nm
 
 
 
 
-
+##
+# @brief テキストファイルからの実行順序(実行条件)読み込む関数
+# @param cs ファイルから読み込んだ単語のリスト
+# @param nm 現在の位置
+# @param ar 条件のリスト
 def LoadAddRule(cs, nm, ar):
 	
-    flag = True;
-    while(flag):
-	ae = add_Rule()
-	ae.name = cs[nm]
-		
-	nm = nm + 1
+	flag = True;
+	while(flag):
+		ae = add_Rule()
+		ae.name = cs[nm]
+
+		nm = nm + 1
 
 	
 		
-	if cs[nm] == "なし":
-	    ae.state = -1
-	elif cs[nm] == "CREATED":
-	    ae.state = OpenRTM_aist.RTC.CREATED_STATE
-	elif cs[nm] == "INACTIVE":
-	    ae.state = OpenRTM_aist.RTC.INACTIVE_STATE
-	elif cs[nm] == "ACTIVE":
-	    ae.state = OpenRTM_aist.RTC.ACTIVE_STATE
-	elif cs[nm] == "ERROR":
-	    ae.state = OpenRTM_aist.RTC.ERROR_STATE
+		if cs[nm] == "なし":
+			ae.state = -1
+		elif cs[nm] == "CREATED":
+			ae.state = OpenRTM_aist.RTC.CREATED_STATE
+		elif cs[nm] == "INACTIVE":
+			ae.state = OpenRTM_aist.RTC.INACTIVE_STATE
+		elif cs[nm] == "ACTIVE":
+			ae.state = OpenRTM_aist.RTC.ACTIVE_STATE
+		elif cs[nm] == "ERROR":
+			ae.state = OpenRTM_aist.RTC.ERROR_STATE
 		
 		
 	
 	
-	ar.append(ae)
+		ar.append(ae)
 
-	nm = nm + 1
+		nm = nm + 1
 
         
-	
+
 		
-	if cs[nm] == ";":
-	    flag = False
-	    return nm
-	elif cs[nm] == "}":
-	    flag = False
-	    return nm
+		if cs[nm] == ";":
+			flag = False
+			return nm
+		elif cs[nm] == "}":
+			flag = False
+			return nm
 		
 		
 
-
+##
+# @brief テキストファイルからの実行順序(直列ブロック)読み込む関数
+# @param cs ファイルから読み込んだ単語のリスト
+# @param nm 現在の位置
+# @param sr 条件のリスト
 def LoadSubRule(cs, nm, sr):
     flag = True
     while(flag):
         rs = sub_Rule()
-		
-	rs.v = cs[nm]
-	    
-	sr.append(rs)
-	
 
-	nm = nm + 1
+        rs.v = cs[nm]
 
-	
+        sr.append(rs)
+
+
+        nm = nm + 1
 
 	
-	    
-	if cs[nm] == ";":
+
+
+    
+        if cs[nm] == ";":
             flag = False
-	    return nm
-	elif cs[nm] == "}":
+            return nm
+        elif cs[nm] == "}":
             flag = False;
-	    return nm
+            return nm
+
 
 ##
-#ファイルより実行順序の読み込む関数
-##
+# @brief ファイルより実行順序の読み込む関数
+# @param rs 実行順序
+# @param fName ファイル名
+# @return 成功でTrue、失敗でFalse
 def LoadMainRule(rs, fName):
 
     if LoadMainRule == "":

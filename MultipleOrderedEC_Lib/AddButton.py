@@ -1,13 +1,24 @@
 # -*- coding: utf-8 -*-
 
+##
+#   @file AddButton.py
+#   @brief 直列ブロックの先頭にブロックを追加するボタン
+
 from PyQt4 import QtCore, QtGui
 from FEComp import FEComp
 
+
 ##
-#ブロック追加ボタンを含むウィジェット
-##
+# @class AddButton
+# @brief 直列ブロックの先頭にブロックを追加するボタン
+#
 class AddButton(QtGui.QWidget):
     clicked = QtCore.pyqtSignal(object)
+    ##
+    # @brief コンストラクタ
+    # @param self 
+    # @param text 表示テキスト
+    # @param parent 親ウィジェット
     def __init__(self, text, parent=None):
         super(AddButton, self).__init__(parent)
         
@@ -27,9 +38,10 @@ class AddButton(QtGui.QWidget):
 
         
         
+    
     ##
-    #ボタンクリック時に呼び出すスロット
-    ##
+    # @brief ボタンクリック時に呼び出すスロット
+    # @param self 
     def clickedSlot(self):
         print self.Fc
         self.clicked.emit(self.Fc)
