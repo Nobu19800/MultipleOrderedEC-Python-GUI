@@ -43,5 +43,4 @@ class AddButton(QtGui.QWidget):
     # @brief ボタンクリック時に呼び出すスロット
     # @param self 
     def clickedSlot(self):
-        print self.Fc
         self.clicked.emit(self.Fc)

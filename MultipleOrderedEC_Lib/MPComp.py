@@ -238,7 +238,7 @@ def LoadSubRule(cs, nm, sr):
 # @param fName ファイル名
 # @return 成功でTrue、失敗でFalse
 def LoadMainRule(rs, fName):
-
+    
     if LoadMainRule == "":
         R = main_Rule()
         rs.append(R)

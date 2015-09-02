@@ -189,7 +189,7 @@ class SetComp(QtGui.QTabWidget):
 
 
                 for i in range(0, len(rs)):
-
+                    
                     if len(self.FCS[h].Comps) > i:
 
                         for j in range(0, len(rs[i].SR)):
@@ -216,7 +216,7 @@ class SetComp(QtGui.QTabWidget):
     def UpdateComps(self):
 
 		Size = self.m_ec.getCompNum()
-	
+		
 
 		rtclist3 = []
 		rtclist4 = []
